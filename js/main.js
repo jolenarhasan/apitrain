@@ -65,4 +65,17 @@ async function deleteproduct(id){
         alert('Error deleting');
     }
 }
+
 getproducts();
+
+window.onscroll=function(){
+
+    const nav=document.querySelector('nav');
+    const about=document.querySelector('.about');
+    if (window.scrollY>about.offsetTop){
+        nav.classList.add('scrollnav');
+    }
+    else{
+        nav.classList.remove('scrollnav');
+    }
+}

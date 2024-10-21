@@ -48,3 +48,29 @@ body{
     transition: transform 0.5s;
     box-shadow: 0 8px 16px rgba(0,0,0,0.6);
 }
+nav{
+    background-color: #d5e3ed;
+    padding: 20PX;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+nav a{
+    color: black;
+    text-decoration: none;
+}
+.about{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px;
+    gap: 20px;
+   
+
+}
+.scrollnav{
+background-color: rgb(104, 122, 124);
+transition: .6s;
+
+}
