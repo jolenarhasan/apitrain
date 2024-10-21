@@ -20,15 +20,21 @@
     document.querySelector('.products').innerHTML=result;
 }*/
 //هاد الفنكشن بجيب الداتا
-const getdata=async ()=>{
-    const{data}=await axios.get('https://dummyjson.com/products');
+const getdata=async (page=1)=>{
+    const limit=20;
+    const skip=(page-1)*limit;
+    const{data}=await axios.get(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+    console.log(data);
     return data;
 }
 //وهاد بحطها بالمكان الي بدي اعرضها فيه
-const getproducts=async()=>{
+const getproducts=async(page=1)=>{
     try{
     const data=await getdata();
+    const totalPages=Math.ceil(data.total/data.limit);
+    console.log(totalPages);
     const result=data.products.map((product)=>
+
         `
         <div class="product">
         <h2>${product.title}</h2>
@@ -39,6 +45,18 @@ const getproducts=async()=>{
         `
         ).join(" ") ;  
         document.querySelector('.products').innerHTML=result;
+
+        let paginationlinks=``;
+        if(page>1){
+            paginationlinks+=` <li class="page-item"><button onclick=getproducts(${page-1}) class="page-link">&laquo;</button></li>`;
+        }
+        for(let i=1; i<=totalPages; i++){
+            paginationlinks+=` <li class="page-item"><button onclick=getproducts(${i}) class="page-link">${i}</button></li>`;
+        }
+        if(page<totalPages){
+            paginationlinks+=` <li class="page-item"><button onclick=getproducts(${page+1}) class="page-link" >&raquo;</button></li>`;
+        }
+        document.querySelector('.pagination').innerHTML=paginationlinks;
     }
     catch(error){
         const result=
