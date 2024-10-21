@@ -12,18 +12,30 @@ const getdetails=async()=>{
 
 }
 const displaydetails=async()=>{
+    try{
     const data= await getdetails();
     console.log(data);
     const result=`
     <h2>${data.title}</h2>
     <p>about this product: ${data.description}</p>
     <span>price: ${data.price}</span>
-    `
+    `;
     const images=data.images.map((img)=>{
         return `<img src='${img}'/>`;
-}).join(' ');
-
-    document.querySelector('.product').innerHTML=result;
-    document.querySelector('.images').innerHTML=images;
+    }).join(' ');
+    document.querySelector('.container .product').innerHTML=result;
+    document.querySelector('.container .images').innerHTML=images;
+    }
+    catch(error){
+        const result=
+        `<h2>error</h2>
+        <p>${error.message}</p>`;
+        document.querySelector('body').innerHTML=result;
+        
+    }
+    finally{
+       
+        document.querySelector('.overlay').classList.add('remove-overlay');
+    }
 }
 displaydetails();
