@@ -30,11 +30,11 @@ const getdata=async (page=1)=>{
 //وهاد بحطها بالمكان الي بدي اعرضها فيه
 const getproducts=async(page=1)=>{
     try{
-    const data=await getdata();
+    const data=await getdata(page);
     const totalPages=Math.ceil(data.total/data.limit);
     console.log(totalPages);
+    console.log(page);
     const result=data.products.map((product)=>
-
         `
         <div class="product">
         <h2>${product.title}</h2>
@@ -57,13 +57,78 @@ const getproducts=async(page=1)=>{
             paginationlinks+=` <li class="page-item"><button onclick=getproducts(${page+1}) class="page-link" >&raquo;</button></li>`;
         }
         document.querySelector('.pagination').innerHTML=paginationlinks;
-    }
-    catch(error){
+
+        const modal=document.querySelector(".myModal");
+        const closebtn=document.querySelector('.closebtn');
+        const rightbtn=document.querySelector('.rightbtn');
+        const leftbtn=document.querySelector('.leftbtn');
+        const allimages=Array.from(document.querySelectorAll("img"));
+        //console.log(modal,modalcontent,closebtn,rightbtn,leftbtn,allimages);
+        let currentIndex=0;
+        rightbtn.addEventListener("click",()=>{
+            currentIndex++;
+            if(currentIndex>=allimages.length){
+              currentIndex=0;
+            }
+            const nextImage=allimages[currentIndex].getAttribute("src");
+            modal.querySelector('img').setAttribute('src',nextImage);
+          });
+
+          leftbtn.addEventListener("click",()=>{
+            currentIndex--;
+            if(currentIndex<0){
+              currentIndex=allimages.length-1;
+            }
+            const prevImage=allimages[currentIndex].getAttribute("src");
+            modal.querySelector('img').setAttribute('src',prevImage);
+          });
+
+        for(let i=0;i<allimages.length;i++){
+            allimages[i].addEventListener("click",(e)=>{
+                console.log(e.target.src);
+                modal.classList.remove('d-none');
+                modal.querySelector('img').setAttribute('src',e.target.src);
+                const currentImage=e.target;
+                currentIndex=allimages.indexOf(currentImage);
+            });
+        }
+        closebtn.addEventListener("click",()=>{
+            modal.classList.add('d-none');
+        });
+        document.addEventListener("keydown",(e)=>{
+            if(e.code=='ArrowRight'){
+                currentIndex++;
+                if(currentIndex>=allimages.length){
+                  currentIndex=0;
+                }
+                const nextImage=allimages[currentIndex].getAttribute("src");
+                modal.querySelector('img').setAttribute('src',nextImage);
+            }
+            else if(e.code=='ArrowLeft'){
+                currentIndex--;
+                if(currentIndex<0){
+                  currentIndex=allimages.length-1;
+                }
+                const prevImage=allimages[currentIndex].getAttribute("src");
+                modal.querySelector('img').setAttribute('src',prevImage);
+            }
+            else if(e.code=='Escape'){
+                modal.classList.add('d-none');
+            }
+        }
+        )
+        document.addEventListener('click',(e)=>{
+            if(e.target==modal){
+                modal.classList.add('d-none');
+            }
+        })
+        
+    } catch(error){
         const result=
         `<h2>error</h2>
         <p>${error.message}</p>`;
         document.querySelector('.products').innerHTML=result;
-        
+            
     }
     finally{
        
@@ -96,4 +161,12 @@ window.onscroll=function(){
     else{
         nav.classList.remove('scrollnav');
     }
-}
+}/*
+//هدول خطا احطهم هون لانه كل الصور بيجو من فنكشن دسبلاي مش ثابتات بالhtml
+const modal=document.querySelector(".myModal");
+const modalcontent=document.querySelector(".modal-content");
+const closebtn=document.querySelector('.closebtn');
+const rightbtn=document.querySelector('.rightbtn');
+const leftbtn=document.querySelector('.leftbtn');
+const allimages=document.querySelectorAll("img");
+console.log(modal,modalcontent,closebtn,rightbtn,leftbtn,allimages);*/

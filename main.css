@@ -42,6 +42,7 @@ body{
 .products .product{
     width: 20%;
     background-color: aliceblue;
+    cursor: pointer;
 }
 .product:hover{
     transform:scale(1.05);
@@ -122,4 +123,54 @@ transition: .6s;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 20px;
+}
+.myModal{
+    position: fixed;
+    z-index: 99999;
+    top:0;
+    left:0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  
+
+}
+
+.myModal .modal-content{
+    position:relative;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow:0 10 10px rgba(0, 0, 0, 0.5) ;
+    
+}
+.myModal .modal-content img{
+    width:400px;
+    
+}
+
+.closebtn,.rightbtn,.leftbtn
+{
+    
+    position: absolute;
+    top:0;
+    cursor: pointer;
+}
+.closebtn{
+    top:5px;
+    right: 5px;
+}
+.rightbtn{
+    top:50%;
+    right: 5px;
+}
+.leftbtn{
+    top:50%;
+    left: 5px;
+}
+.d-none{
+    display: none !important;
 }
